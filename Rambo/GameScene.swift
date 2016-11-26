@@ -235,7 +235,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didSimulatePhysics() {
         //print("SImulando")
     }
+    
+    
+    var seconds: Int = 0
+    
     override func update(_ currentTime: TimeInterval) {
+        
         if left_key == true{
             player.physicsBody?.velocity = CGVector(dx: -velocity, dy: (player.physicsBody?.velocity.dy)!)
             //player.position.x -= velocity
@@ -256,6 +261,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             shoot()
         }
         
+        
+        if seconds >= 120 {
+        
         enumerateChildNodes(withName: "bullet*"){ node, stop in
             let bullet = node as! SKSpriteNode
             if (bullet.physicsBody?.isResting)! {
@@ -272,13 +280,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
         }
+            seconds = 0
+        }
+        seconds += 1
         
-        scene_camera.position.x -= (scene_camera.position.x - player.position.x)/5
-        scene_camera.position.y -= (scene_camera.position.y - player.position.y)/5
+        let positionX = round(Float((scene_camera.position.x - player.position.x)))
         
         
-    
-       
+        scene_camera.run(SKAction.move(to: CGPoint(x: round(player.position.x), y: scene_camera.position.y), duration: 0.25))
+        
 
     }
     
